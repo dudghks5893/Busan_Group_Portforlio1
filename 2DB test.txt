@@ -1,0 +1,122 @@
+CREATE TABLE category
+(
+    cateid    NUMBER          NULL, 
+    name      VARCHAR2(40)    NULL, 
+    CONSTRAINT CATEGORY_PK PRIMARY KEY (cateid)
+);
+
+CREATE TABLE local
+(
+    localid    NUMBER          NOT NULL, 
+    ci         VARCHAR2(40)    NULL, 
+    gu         VARCHAR2(40)    NULL,
+    CONSTRAINT LOCAL_PK PRIMARY KEY (localid)
+);
+
+CREATE TABLE customer
+(
+    custid       NUMBER          NULL, 
+    tel          VARCHAR2(40)    NULL, 
+    name         VARCHAR2(40)    NULL, 
+    password     VARCHAR2(40)    NULL, 
+    user_name    VARCHAR2(40)    NULL, 
+    CONSTRAINT CUSTOMER_PK PRIMARY KEY (custid)
+);
+CREATE TABLE maskrate
+(
+    maskid    NUMBER    NOT NULL, 
+    type1     NUMBER    NULL, 
+    type2     NUMBER    NULL, 
+    type3     NUMBER    NULL, 
+    type4     NUMBER    NULL, 
+    marketid NUMBER    NOT NULL,
+    CONSTRAINT MASKRATE_PK PRIMARY KEY (maskid)
+);
+ALTER TABLE maskrate
+    ADD CONSTRAINT FK_maskrate_marketid_market_ma FOREIGN KEY (marketid)
+        REFERENCES market (marketid);
+
+CREATE TABLE market
+(
+    marketid    NUMBER          NOT NULL, 
+    cateid      NUMBER          NOT NULL, 
+    name        VARCHAR2(40)    NULL, 
+    address     VARCHAR2(80)    NULL, 
+    tel         VARCHAR2(40)    NULL, 
+    time       VARCHAR2(40)     NULL, 
+    localid     NUMBER          NULL, 
+    CONSTRAINT MARKET_PK PRIMARY KEY (marketid)
+);
+ALTER TABLE market
+    ADD CONSTRAINT FK_market_cateid_category_cate FOREIGN KEY (cateid)
+        REFERENCES category (cateid);
+ALTER TABLE market
+    ADD CONSTRAINT FK_market_localid_local_locali FOREIGN KEY (localid)
+        REFERENCES local (localid);
+
+CREATE TABLE review
+(
+    reviewid    NUMBER           NOT NULL, 
+    custid      NUMBER           NULL, 
+    time        DATE             NULL, 
+    text        VARCHAR2(100)    NULL, 
+    marketid    NUMBER           NULL, 
+    maskid      NUMBER           NULL, 
+    CONSTRAINT REVIEW_PK PRIMARY KEY (reviewid)
+);
+
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_marketid_market_mark FOREIGN KEY (marketid)
+        REFERENCES market (marketid)
+;
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_custid_customer_cust FOREIGN KEY (custid)
+        REFERENCES customer (custid)
+;
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_maskid_maskrate_mask FOREIGN KEY (maskid)
+        REFERENCES maskrate (maskid)
+;
+INSERT INTO CUSTOMER VALUES ( 1, '01039502883', '이재선', '1234', 'JASON');
+INSERT INTO CUSTOMER VALUES(2, '01066208420', '서경아', '1004', 'KYONGAH');
+INSERT INTO CUSTOMER VALUES(3, '01011112222', '전현우', '1004', 'HYUNWO');
+INSERT INTO CUSTOMER VALUES(4, '01033334444', '김민근', '1004', 'MINGUEN');
+INSERT INTO CUSTOMER VALUES(5, '01055556666', '채영환', '1004', 'YOUNGHWAN');
+INSERT INTO CUSTOMER VALUES(6, '01077778888', '황태욱', '1004', 'TAEWOOK');
+
+INSERT INTO CATEGORY VALUES ( 1, '음식점');
+INSERT INTO CATEGORY VALUES ( 2, '카페');
+INSERT INTO CATEGORY VALUES ( 3, '편의점');
+
+INSERT INTO LOCAL VALUES (1, '부산광역시', '부산진구');
+
+INSERT INTO MARKET VALUES (1, 2, '마이페이보릿쿠키', '부산 부산진구 서전로 37번길26',
+'051-756-5115', '평일 12:00-19:00', 1);
+INSERT INTO MARKET VALUES (2, 2, '베이커스 전포본점', '부산 부산진구 전포대로 209번길15',
+'051-807-4047', '패일 10:30-20:00', 1);
+INSERT INTO MARKET VALUES (3, 2, '모던테이블', '부산 부산진구 중앙대로 680번길45-9 3층',
+'051-809-0301', '평일 12:00-23:00', 1);
+INSERT INTO MARKET VALUES (4, 2, '베르크', '부산 부산진구 서전로 58번길115',
+'051-992-1113', '평일 12:00-23:00', 1);
+INSERT INTO MARKET VALUES (5, 2, '블랙업커피', '부산 부산진구 서전로 37번길26',
+'051-944-4952', '평일 10:00-23:00', 1);
+INSERT INTO MARKET VALUES (6, 2, '올더어글리쿠키', '부산 부산진구 전포동675-29',
+'051-9025-2501', '월요일휴무', 1);
+
+INSERT INTO MASKRATE VALUES ( 1, 3,5,2,2, 1);
+INSERT INTO MASKRATE VALUES ( 2, 2,4,3,3, 2);
+INSERT INTO MASKRATE VALUES ( 3, 3,5,2,2, 3);
+INSERT INTO MASKRATE VALUES ( 4, 1,2,2,1, 4);
+INSERT INTO MASKRATE VALUES ( 5, 4,4,4,4, 5);
+INSERT INTO MASKRATE VALUES ( 6, 3,3,3,3, 6);
+
+
+INSERT INTO REVIEW VALUES (1, 1, '2020/12/10', '평범', 1 , 1);
+INSERT INTO REVIEW VALUES (2, 2, '2020/12/10', '나름', 1 , 2);
+INSERT INTO REVIEW VALUES (3, 3, '2020/12/10', '평범', 2 , 3);
+INSERT INTO REVIEW VALUES (4, 4, '2020/12/10', '준수', 3 , 4);
+INSERT INTO REVIEW VALUES (5, 5, '2020/12/10', '비쌈', 4 , 5);
+INSERT INTO REVIEW VALUES (6, 6, '2020/12/10', '그닥', 6 , 6);
