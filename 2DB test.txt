@@ -1,70 +1,89 @@
+-- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
+
+-- category Table Create SQL
 CREATE TABLE category
 (
     cateid    NUMBER          NULL, 
-    name      VARCHAR2(40)    NULL, 
+    shop      VARCHAR2(40)    NULL, 
     CONSTRAINT CATEGORY_PK PRIMARY KEY (cateid)
-);
+)
+;
 
+-- category Table Create SQL
 CREATE TABLE local
 (
     localid    NUMBER          NOT NULL, 
     ci         VARCHAR2(40)    NULL, 
-    gu         VARCHAR2(40)    NULL,
+    gu         VARCHAR2(40)    NULL, 
     CONSTRAINT LOCAL_PK PRIMARY KEY (localid)
-);
-
-CREATE TABLE customer
-(
-    custid       NUMBER          NULL, 
-    tel          VARCHAR2(40)    NULL, 
-    name         VARCHAR2(40)    NULL, 
-    password     VARCHAR2(40)    NULL, 
-    user_name    VARCHAR2(40)    NULL, 
-    CONSTRAINT CUSTOMER_PK PRIMARY KEY (custid)
-);
-CREATE TABLE maskrate
-(
-    maskid    NUMBER    NOT NULL, 
-    type1     NUMBER    NULL, 
-    type2     NUMBER    NULL, 
-    type3     NUMBER    NULL, 
-    type4     NUMBER    NULL, 
-    marketid NUMBER    NOT NULL,
-    CONSTRAINT MASKRATE_PK PRIMARY KEY (maskid)
-);
-ALTER TABLE maskrate
-    ADD CONSTRAINT FK_maskrate_marketid_market_ma FOREIGN KEY (marketid)
-        REFERENCES market (marketid);
-
+)
+;
+-- category Table Create SQL
 CREATE TABLE market
 (
-    marketid    NUMBER          NOT NULL, 
-    cateid      NUMBER          NOT NULL, 
-    name        VARCHAR2(40)    NULL, 
-    address     VARCHAR2(80)    NULL, 
-    tel         VARCHAR2(40)    NULL, 
-    time       VARCHAR2(40)     NULL, 
-    localid     NUMBER          NULL, 
+    marketid    NUMBER           NOT NULL, 
+    cateid      NUMBER           NOT NULL, 
+    name        VARCHAR2(40)     NULL, 
+    address     VARCHAR2(100)     NULL, 
+    tel         VARCHAR2(40)     NULL, 
+    time        DATE             NULL, 
+    localid     NUMBER           NULL, 
+    img         VARCHAR2(100)    NULL, 
     CONSTRAINT MARKET_PK PRIMARY KEY (marketid)
-);
+)
+;
 ALTER TABLE market
     ADD CONSTRAINT FK_market_cateid_category_cate FOREIGN KEY (cateid)
-        REFERENCES category (cateid);
+        REFERENCES category (cateid)
+;
+
 ALTER TABLE market
     ADD CONSTRAINT FK_market_localid_local_locali FOREIGN KEY (localid)
-        REFERENCES local (localid);
+        REFERENCES local (localid)
+;
 
+-- category Table Create SQL
+CREATE TABLE customer
+(
+    tel         VARCHAR2(40)    NULL, 
+    name        VARCHAR2(40)    NULL, 
+    password    VARCHAR2(40)    NULL, 
+    id          VARCHAR2(40)    NULL, 
+    CONSTRAINT CUSTOMER_PK PRIMARY KEY (id)
+)
+;
+
+-- category Table Create SQL
+CREATE TABLE maskrate
+(
+    maskid      NUMBER    NOT NULL, 
+    type1       NUMBER    NULL, 
+    type2       NUMBER    NULL, 
+    type3       NUMBER    NULL, 
+    type4       NUMBER    NULL, 
+    marketid    NUMBER    NULL, 
+    CONSTRAINT MASKRATE_PK PRIMARY KEY (maskid)
+)
+;
+
+ALTER TABLE maskrate
+    ADD CONSTRAINT FK_maskrate_marketid_market_ma FOREIGN KEY (marketid)
+        REFERENCES market (marketid)
+;
+
+
+-- category Table Create SQL
 CREATE TABLE review
 (
     reviewid    NUMBER           NOT NULL, 
-    custid      NUMBER           NULL, 
+    id          VARCHAR2(40)     NULL, 
     time        DATE             NULL, 
     text        VARCHAR2(100)    NULL, 
     marketid    NUMBER           NULL, 
     maskid      NUMBER           NULL, 
     CONSTRAINT REVIEW_PK PRIMARY KEY (reviewid)
-);
-
+)
+;
 
 ALTER TABLE review
     ADD CONSTRAINT FK_review_marketid_market_mark FOREIGN KEY (marketid)
@@ -72,13 +91,13 @@ ALTER TABLE review
 ;
 
 ALTER TABLE review
-    ADD CONSTRAINT FK_review_custid_customer_cust FOREIGN KEY (custid)
-        REFERENCES customer (custid)
+    ADD CONSTRAINT FK_review_maskid_maskrate_mask FOREIGN KEY (maskid)
+        REFERENCES maskrate (maskid)
 ;
 
 ALTER TABLE review
-    ADD CONSTRAINT FK_review_maskid_maskrate_mask FOREIGN KEY (maskid)
-        REFERENCES maskrate (maskid)
+    ADD CONSTRAINT FK_review_id_customer_id FOREIGN KEY (id)
+        REFERENCES customer (id)
 ;
 INSERT INTO CUSTOMER VALUES ( 1, '01039502883', '이재선', '1234', 'JASON');
 INSERT INTO CUSTOMER VALUES(2, '01066208420', '서경아', '1004', 'KYONGAH');
