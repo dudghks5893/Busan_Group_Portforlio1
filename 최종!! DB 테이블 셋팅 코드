@@ -1,0 +1,172 @@
+-- category Table Create SQL
+CREATE TABLE category
+(
+    cateid    NUMBER          NULL, 
+    shop      VARCHAR2(40)    NULL, 
+    CONSTRAINT CATEGORY_PK PRIMARY KEY (cateid)
+)
+;
+
+-- category Table Create SQL
+CREATE TABLE local
+(
+    localid    NUMBER          NOT NULL, 
+    ci         VARCHAR2(40)    NULL, 
+    gu         VARCHAR2(40)    NULL, 
+    CONSTRAINT LOCAL_PK PRIMARY KEY (localid)
+)
+;
+-- category Table Create SQL
+CREATE TABLE market
+(
+    marketid    NUMBER           NOT NULL, 
+    cateid      NUMBER           NOT NULL, 
+    name        VARCHAR2(40)     NULL, 
+    address     VARCHAR2(100)     NULL, 
+    tel         VARCHAR2(40)     NULL, 
+    time        DATE             NULL, 
+    localid     NUMBER           NULL, 
+    img         VARCHAR2(100)    NULL, 
+    CONSTRAINT MARKET_PK PRIMARY KEY (marketid)
+)
+;
+ALTER TABLE market
+    ADD CONSTRAINT FK_market_cateid_category_cate FOREIGN KEY (cateid)
+        REFERENCES category (cateid)
+;
+
+ALTER TABLE market
+    ADD CONSTRAINT FK_market_localid_local_locali FOREIGN KEY (localid)
+        REFERENCES local (localid)
+;
+
+-- category Table Create SQL
+CREATE TABLE customer
+(
+    tel         VARCHAR2(40)    NULL, 
+    name        VARCHAR2(40)    NULL, 
+    password    VARCHAR2(40)    NULL, 
+    id          VARCHAR2(40)    NULL, 
+    CONSTRAINT CUSTOMER_PK PRIMARY KEY (id)
+)
+;
+
+-- category Table Create SQL
+CREATE TABLE maskrate
+(
+    maskid      NUMBER    NOT NULL, 
+    type1       NUMBER    NULL, 
+    type2       NUMBER    NULL, 
+    type3       NUMBER    NULL, 
+    type4       NUMBER    NULL, 
+    marketid    NUMBER    NULL, 
+    CONSTRAINT MASKRATE_PK PRIMARY KEY (maskid)
+)
+;
+
+ALTER TABLE maskrate
+    ADD CONSTRAINT FK_maskrate_marketid_market_ma FOREIGN KEY (marketid)
+        REFERENCES market (marketid)
+;
+
+
+-- category Table Create SQL
+CREATE TABLE review
+(
+    reviewid    NUMBER           NOT NULL, 
+    id          VARCHAR2(40)     NULL, 
+    time        DATE             NULL, 
+    text        VARCHAR2(100)    NULL, 
+    marketid    NUMBER           NULL, 
+    maskid      NUMBER           NULL, 
+    CONSTRAINT REVIEW_PK PRIMARY KEY (reviewid)
+)
+;
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_marketid_market_mark FOREIGN KEY (marketid)
+        REFERENCES market (marketid)
+;
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_maskid_maskrate_mask FOREIGN KEY (maskid)
+        REFERENCES maskrate (maskid)
+;
+
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_id_customer_id FOREIGN KEY (id)
+        REFERENCES customer (id)
+;
+alter table market modify(time varchar2(80));
+
+
+
+
+
+
+INSERT INTO CUSTOMER VALUES( '01039502883', '이재선', '1234', 'JASON');
+INSERT INTO CUSTOMER VALUES( '01066208420', '서경아', '1004', 'KYONGAH');
+INSERT INTO CUSTOMER VALUES( '01011112222', '전현우', '1004', 'HYUNWO');
+INSERT INTO CUSTOMER VALUES( '01033334444', '김민근', '1004', 'MINGUEN');
+INSERT INTO CUSTOMER VALUES( '01055556666', '채영환', '1004', 'YOUNGHWAN');
+INSERT INTO CUSTOMER VALUES( '01077778888', '황태욱', '1004', 'TAEWOOK');
+
+INSERT INTO CATEGORY VALUES ( 1, '음식점');
+INSERT INTO CATEGORY VALUES ( 2, '카페');
+INSERT INTO CATEGORY VALUES ( 3, '편의점');
+
+INSERT INTO LOCAL VALUES (1, '부산광역시', '부산진구');
+
+INSERT INTO MARKET VALUES (1, 2, '마이페이보릿쿠키', '부산 부산진구 서전로 37번길26',
+'051-756-5115', '평일 12:00-19:00', 1, '../img/마이페이보릿쿠키.jpg');
+INSERT INTO MARKET VALUES (2, 2, '베이커스 전포본점', '부산 부산진구 전포대로 209번길15',
+'051-807-4047', '평일 10:30-20:00', 1, '../img/베이커스.jpg');
+INSERT INTO MARKET VALUES (3, 2, '모던테이블', '부산 부산진구 중앙대로 680번길45-9 3층',
+'051-809-0301', '평일 12:00-23:00', 1, '../img/모던테이블.jpg');
+INSERT INTO MARKET VALUES (4, 2, '베르크', '부산 부산진구 서전로 58번길115',
+'051-992-1113', '평일 12:00-23:00', 1, '../img/베르크.jpg');
+INSERT INTO MARKET VALUES (5, 2, '블랙업커피', '부산 부산진구 서전로 37번길26',
+'051-944-4952', '평일 10:00-23:00', 1, '../img/블랙업커피.jpg');
+INSERT INTO MARKET VALUES (6, 2, '올더어글리쿠키', '부산 부산진구 전포동675-29',
+'051-9025-2501', '월요일휴무', 1, '../img/올더어글리쿠키.jpg');
+INSERT INTO MARKET VALUES (7, 1, '그집뱃살', '부산 부산진구 중앙대로680번가길 80-30',
+'051-807-0377', '평일 17:30 - 03:00', 1, '../img/그집뱃살.jpg');
+INSERT INTO MARKET VALUES (8, 1, '페이센동', '부산 부산진구 서전로46번길 6',
+'0507-1369-9399', '평일 11:30 - 20:30', 1, '../img/페이센동.jpg');
+INSERT INTO MARKET VALUES (9, 1, '3found', '부산 부산진구 성지로 50',
+'0507-1330-8853', '매일 11:00 - 21:30', 1, '../img/3found.jpg');
+INSERT INTO MARKET VALUES (10, 1, '화남정돼지국밥', '부산 부산진구 중앙대로680번가길 80-3',
+'051-807-0377', '평일 17:30 - 03:00', 1, '../img/화남정돼지국밥.jpg');
+INSERT INTO MARKET VALUES (11, 1, '카가와식당', '전포역 8번 출구 부산은행 횡단보도 건너편 1층',
+'0507-1308-6106', '매일 00:00 - 00:01', 1, '../img/카가와식당.jpg');
+INSERT INTO MARKET VALUES (12, 1, '버거샵', '부산 부산진구 동천로108번길',
+'051-911-4960', '매일 11:30 - 21:00', 1, '../img/버거샵.jpg');
+INSERT INTO MARKET VALUES (13, 3, 'GS25 서면제일점', '부산 부산진구 중앙대로680번길 45-9',
+'051-818-2478', '매일', 1, '../img/GS25.jpg');
+INSERT INTO MARKET VALUES (14, 3, '이마트24 서면삼정타워점', '부산 부산진구 중앙대로 672',
+'051-520-3773', '매일 10:00 - 02:00', 1, '../img/emart24.jpg');
+INSERT INTO MARKET VALUES (15, 3, '세븐일레븐 부산밀리오레점', '부산 부산진구 서전로 25 이오스프라자',
+'051-817-3372', '매일', 1, '../img/세븐일레븐.jpg');
+INSERT INTO MARKET VALUES (16, 3, 'CU 부암점', '부산 부산진구 신천대로 204',
+'051-808-3328', '매일', 1, '../img/CU.jpg');
+INSERT INTO MARKET VALUES (17, 3, 'GS25 전포제일점', '부산 부산진구 동천로 72',
+'051-818-9866', '매일', 1, '../img/GS25키.jpg');
+INSERT INTO MARKET VALUES (18, 3, 'CU 서면센트럴스타점', '부산 부산진구 신천대로50번길 34',
+'051-802-7434', '매일', 1, '../img/CU.jpg');
+
+
+
+INSERT INTO MASKRATE VALUES ( 1, 3,5,2,2, 1);
+INSERT INTO MASKRATE VALUES ( 2, 2,4,3,3, 2);
+INSERT INTO MASKRATE VALUES ( 3, 3,5,2,2, 3);
+INSERT INTO MASKRATE VALUES ( 4, 1,2,2,1, 4);
+INSERT INTO MASKRATE VALUES ( 5, 4,4,4,4, 5);
+INSERT INTO MASKRATE VALUES ( 6, 3,3,3,3, 6);
+
+
+INSERT INTO REVIEW VALUES (1, 'JASON', '2020/12/10', '평범', 1 , 1);
+INSERT INTO REVIEW VALUES (2, 'KYONGAH', '2020/12/10', '나름', 1 , 2);
+INSERT INTO REVIEW VALUES (3, 'MINGUEN', '2020/12/10', '평범', 2 , 3);
+INSERT INTO REVIEW VALUES (4, 'YOUNGHWAN', '2020/12/10', '준수', 3 , 4);
+INSERT INTO REVIEW VALUES (5, 'TAEWOOK', '2020/12/10', '비쌈', 4 , 5);
+INSERT INTO REVIEW VALUES (6, 'HYUNWO', '2020/12/10', '그닥', 6 , 6);
