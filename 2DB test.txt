@@ -99,3 +99,4 @@ ALTER TABLE review
     ADD CONSTRAINT FK_review_id_customer_id FOREIGN KEY (id)
         REFERENCES customer (id)
 ;
+alter table market modify(time varchar2(80));
